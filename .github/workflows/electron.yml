@@ -24,7 +24,7 @@ jobs:
       run: npm install --save-dev @electron-forge/cli
     - name: Install Electron Forge (WiX MSI module)
       if: ${{ matrix.os  == 'windows-latest' }}
-      run: npm install --save-dev electron-wix-msi
+      run: npm install --save-dev @electron-forge/maker-wix
     - name: Setup Electron Forge
       run: npx electron-forge import
     - name: Build app for macOS/Linux (x86_64)
