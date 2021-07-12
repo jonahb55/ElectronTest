@@ -18,8 +18,17 @@ jobs:
       with:
         node-version: '16.x'
         cache: 'npm'
+    - name: Install Node.js dependencies
     - run: npm install
+    - name: Install Electron Forge
     - run: npm install --save-dev @electron-forge/cli
+    - name: Setup Electron Forge
     - run: npx electron-forge import
+    - name: Build App
     - run: npm run make
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-output
+        path: out/make
     
