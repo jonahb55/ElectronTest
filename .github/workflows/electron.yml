@@ -32,7 +32,7 @@ jobs:
       run: npx electron-forge make --arch x64
     - name: Build app for Windows (x86_64)
       if: ${{ matrix.os == 'windows-latest' }}
-      run: npx electron-forge make --arch x64 --targets @electron-forge/maker-wix
+      run: setx path "%PATH%;%WIX%bin" & npx electron-forge make --arch x64 --targets @electron-forge/maker-wix
     - name: Upload artifacts (x86_64)
       uses: actions/upload-artifact@v2
       with:
