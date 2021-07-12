@@ -22,20 +22,31 @@ jobs:
       run: npm install
     - name: Install Electron Forge
       run: npm install --save-dev @electron-forge/cli
+    - name: Install Electron Forge (WiX MSI module)
+      run: npm install --save-dev electron-wix-msi
+      if: ${{ matrix.os }} == 'windows-latest'
     - name: Setup Electron Forge
       run: npx electron-forge import
-    - name: Build App (x86_64)
+    - name: Build app (x86_64)
       run: npx electron-forge make --arch x64
-    - name: Upload Artifacts (x86_64)
+      if: ${{ matrix.os }} != 'windows-latest'
+    - name: Build app (x86_64)
+      run: npx electron-forge make --arch x64 --targets @electron-forge/maker-wix
+      if: ${{ matrix.os }} == 'windows-latest'
+    - name: Upload artifacts (x86_64)
       uses: actions/upload-artifact@v2
       with:
         name: build-${{ matrix.os }}-x86_64
         path: out/make
-    - name: Reset Artifacts
+    - name: Reset artifacts
       run: rm -r out/make
-    - name: Build App (arm64)
+    - name: Build app (arm64)
       run: npx electron-forge make --arch arm64
-    - name: Upload Artifacts (arm64)
+      if: ${{ matrix.os }} != 'windows-latest'
+    - name: Build app (arm64)
+      run: npx electron-forge make --arch arm64 --targets @electron-forge/maker-wix
+      if: ${{ matrix.os }} == 'windows-latest'
+    - name: Upload artifacts (arm64)
       uses: actions/upload-artifact@v2
       with:
         name: build-${{ matrix.os }}-arm64
