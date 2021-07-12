@@ -1,0 +1,25 @@
+name: Build Electron
+
+on: workflow_dispatch
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16.x'
+        cache: 'npm'
+    - run: npm install
+    - run: npm install --save-dev @electron-forge/cli
+    - run: npx electron-forge import
+    - run: npm run make
+    
