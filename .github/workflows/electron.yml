@@ -24,11 +24,21 @@ jobs:
       run: npm install --save-dev @electron-forge/cli
     - name: Setup Electron Forge
       run: npx electron-forge import
-    - name: Build App
-      run: npm run make
-    - name: Upload Artifacts
+    - name: Build App (x86_64)
+      run: npx electron-forge make --arch x64
+    - name: Upload Artifacts (x86_64)
       uses: actions/upload-artifact@v2
       with:
-        name: build-${{ matrix.os }}
+        name: build-${{ matrix.os }}-x86_64
         path: out/make
+    - name: Reset Artifacts
+      run: rm -r out/make
+    - name: Build App (arm64)
+      run: npx electron-forge make --arch arm64
+    - name: Upload Artifacts (arm64)
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-${{ matrix.os }}-arm64
+        path: out/make
+    
     
